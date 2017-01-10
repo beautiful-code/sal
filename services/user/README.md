@@ -4,7 +4,11 @@
 1. Clone this repository to your $GOPATH/src/github.com
 2. Run `cd beautiful-code/sal/services/user`
 3. Run `glide install`
-4. Run `go run main.go`
+4. Run `cp config.json.example config.json` and update the values in the `config.json` file
+5. Generate openssl keys for JWT. Run `mkdir keys`
+		a) `openssl genrsa -out keys/app.rsa 1024`
+		b) `openssl rsa -in keys/app.rsa -pubout > keys/app.rsa.pub`
+6. Run `go run main.go`
 
 #### API Endpoints:
 1. Register - "/register"
