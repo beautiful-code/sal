@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -113,8 +112,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	dataStore.Session.Where("email = ?", loginUser.Email).First(&user)
 
 	// Authenticate the login user
-	fmt.Println(user)
-
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
 
 	if err != nil {
