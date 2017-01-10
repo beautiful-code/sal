@@ -4,7 +4,7 @@
   "DBProtocol"  : "tcp",
   "DBPort"  		: "3306",
   "DBUser"			: "root",
-  "DBPwd"	 			: "",
-  "Database"    : "sal_development",
+  "DBPwd"	 			: "password",
+  "DBName"      : "sal_development",
   "LogLevel"    : 4
 }
