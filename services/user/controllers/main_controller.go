@@ -3,11 +3,14 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/gorilla/context"
 
 	"github.com/beautiful-code/sal/common"
 	"github.com/beautiful-code/sal/services/user/models"
@@ -32,8 +35,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userModel := dataResource.Data
-	dataStore := common.NewDataStore()
-	defer dataStore.Close()
 
 	hpass, err := bcrypt.GenerateFromPassword([]byte(userModel.Password), bcrypt.DefaultCost)
 
@@ -53,7 +54,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	if valid {
 		// TODO: Handle the errors
 		// Create User record
-		result := dataStore.Session.Create(&user)
+		result := common.DB.Create(&user)
 		err := "User record not saved"
 
 		if result.Error != nil {
@@ -62,7 +63,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if dataStore.Session.NewRecord(&user) {
+		if common.DB.NewRecord(&user) {
 			common.DisplayAppError(
 				w,
 				errors.New(err),
@@ -105,11 +106,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginUser := dataResource.Data
-	dataStore := common.NewDataStore()
-	defer dataStore.Close()
 
 	var user model.User
-	dataStore.Session.Where("email = ?", loginUser.Email).First(&user)
+	common.DB.Where("email = ?", loginUser.Email).First(&user)
 
 	// Authenticate the login user
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
@@ -142,6 +141,42 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Token: token,
 	}
 	j, err := json.Marshal(AuthUserResource{Data: authUser})
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"An unexpected error has occurred",
+			500,
+		)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
+}
+
+// Returns the user object when valid JWT token is present.
+// Handler for HTTP Post - "/getUser"
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	var current_user_email string
+	// Get current user email from context
+	if val, ok := context.GetOk(r, "current_user_email"); ok {
+		current_user_email = val.(string)
+	}
+
+	var user model.User
+	common.DB.Where("email = ?", current_user_email).First(&user)
+
+	fmt.Println(current_user_email)
+
+	w.Header().Set("Content-Type", "application/json")
+	// Clean-up the hashpassword to eliminate it from response JSON
+	user.Password = ""
+	jsonUser := UserModel{
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+	}
+	j, err := json.Marshal(UserResource{Data: jsonUser})
 	if err != nil {
 		common.DisplayAppError(
 			w,

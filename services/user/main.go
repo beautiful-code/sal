@@ -17,10 +17,12 @@ func main() {
 	// Calls startup logic
 	common.StartUp("config.json")
 
-	// TODO Move this logic to a better place
-	dataStore := common.NewDataStore()
-	dataStore.Session.AutoMigrate(&model.User{})
-	dataStore.Close()
+	if common.DB == nil {
+		log.Fatalf("[DB]: Failed to fetch the connection object.")
+	}
+
+	// Run DB Migrations
+	common.DB.AutoMigrate(&model.User{})
 
 	// Get the mux router object
 	router := routers.InitRoutes()

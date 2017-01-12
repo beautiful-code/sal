@@ -50,38 +50,31 @@ func initLog(
 	Info = log.New(infoHandle, "INFO: ", flag)
 	Warning = log.New(warningHandle, "WARNING: ", flag)
 	Error = log.New(errorHandle, "ERROR: ", flag)
-
 }
 
 // SetLogLevel sets the logging level preference
 func setLogLevel(level Level) {
-
-	// Creates os.*File, which has implemented io.Writer intreface
-	f, err := os.OpenFile("logs.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("Error opening log file: %s", err.Error())
-	}
-
+	out := os.Stdout
+	err := os.Stderr
 	// Calls function initLog by specifying log level preference.
 	switch level {
 	case TRACE:
-		initLog(f, f, f, f, true)
+		initLog(out, out, out, err, true)
 		return
 
 	case INFO:
-		initLog(ioutil.Discard, f, f, f, true)
+		initLog(ioutil.Discard, out, out, err, true)
 		return
 
 	case WARNING:
-		initLog(ioutil.Discard, ioutil.Discard, f, f, true)
+		initLog(ioutil.Discard, ioutil.Discard, out, err, true)
 		return
 	case ERROR:
-		initLog(ioutil.Discard, ioutil.Discard, ioutil.Discard, f, true)
+		initLog(ioutil.Discard, ioutil.Discard, ioutil.Discard, err, true)
 		return
 
 	default:
 		initLog(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, false)
-		f.Close()
 		return
 
 	}
