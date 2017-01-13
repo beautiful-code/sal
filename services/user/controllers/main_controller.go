@@ -9,6 +9,8 @@ import (
 	"github.com/asaskevich/govalidator"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/gorilla/context"
+
 	"github.com/beautiful-code/sal/common"
 	"github.com/beautiful-code/sal/services/user/models"
 )
@@ -142,6 +144,44 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Token: token,
 	}
 	j, err := json.Marshal(AuthUserResource{Data: authUser})
+	if err != nil {
+		common.DisplayAppError(
+			w,
+			err,
+			"An unexpected error has occurred",
+			500,
+		)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
+}
+
+// Returns the user object when valid JWT token is present.
+// Handler for HTTP Post - "/getUser"
+func GetUser(w http.ResponseWriter, r *http.Request) {
+
+	dataStore := common.NewDataStore()
+	defer dataStore.Close()
+
+	var current_user_email string
+	// Get current user email from context
+	if val, ok := context.GetOk(r, "current_user_email"); ok {
+		current_user_email = val.(string)
+	}
+
+	var user model.User
+	dataStore.Session.Where("email = ?", current_user_email).First(&user)
+
+	w.Header().Set("Content-Type", "application/json")
+	// Clean-up the hashpassword to eliminate it from response JSON
+	user.Password = ""
+	jsonUser := UserModel{
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+	}
+	j, err := json.Marshal(UserResource{Data: jsonUser})
 	if err != nil {
 		common.DisplayAppError(
 			w,
