@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -34,8 +35,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userModel := dataResource.Data
-	dataStore := common.NewDataStore()
-	defer dataStore.Close()
 
 	hpass, err := bcrypt.GenerateFromPassword([]byte(userModel.Password), bcrypt.DefaultCost)
 
@@ -55,7 +54,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	if valid {
 		// TODO: Handle the errors
 		// Create User record
-		result := dataStore.Session.Create(&user)
+		result := common.DB.Create(&user)
 		err := "User record not saved"
 
 		if result.Error != nil {
@@ -64,7 +63,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if dataStore.Session.NewRecord(&user) {
+		if common.DB.NewRecord(&user) {
 			common.DisplayAppError(
 				w,
 				errors.New(err),
@@ -107,11 +106,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginUser := dataResource.Data
-	dataStore := common.NewDataStore()
-	defer dataStore.Close()
 
 	var user model.User
-	dataStore.Session.Where("email = ?", loginUser.Email).First(&user)
+	common.DB.Where("email = ?", loginUser.Email).First(&user)
 
 	// Authenticate the login user
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
@@ -160,10 +157,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 // Returns the user object when valid JWT token is present.
 // Handler for HTTP Post - "/getUser"
 func GetUser(w http.ResponseWriter, r *http.Request) {
-
-	dataStore := common.NewDataStore()
-	defer dataStore.Close()
-
 	var current_user_email string
 	// Get current user email from context
 	if val, ok := context.GetOk(r, "current_user_email"); ok {
@@ -171,7 +164,9 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user model.User
-	dataStore.Session.Where("email = ?", current_user_email).First(&user)
+	common.DB.Where("email = ?", current_user_email).First(&user)
+
+	fmt.Println(current_user_email)
 
 	w.Header().Set("Content-Type", "application/json")
 	// Clean-up the hashpassword to eliminate it from response JSON

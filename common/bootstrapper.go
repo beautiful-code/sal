@@ -1,5 +1,11 @@
 package common
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
+var DB *gorm.DB
+
 // StartUp bootstrapps the application
 func StartUp(configFilePath string) {
 	// Initialize AppConfig variable
@@ -8,6 +14,6 @@ func StartUp(configFilePath string) {
 	initKeys()
 	// Initialize Logger objects with Log Level
 	setLogLevel(Level(AppConfig.LogLevel))
-	// Start a DB session
-	createDBSession()
+	// open a DB connection
+	DB = NewDBConnection()
 }
