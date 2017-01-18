@@ -12,13 +12,13 @@ var session *gorm.DB
 
 func getSession() *gorm.DB {
 	if session == nil {
-		createDBSession()
+		CreateDBSession()
 	}
 
 	return session
 }
 
-func createDBSession() {
+func CreateDBSession() {
 	var err error
 
 	mysqlCredentials := fmt.Sprintf(

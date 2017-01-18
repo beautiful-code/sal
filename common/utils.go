@@ -42,7 +42,7 @@ func DisplayAppError(w http.ResponseWriter, handlerError error, message string, 
 var AppConfig configuration
 
 // Initialize AppConfig
-func initConfig(configFilePath string) {
+func InitConfig(configFilePath string) {
 	loadAppConfig(configFilePath)
 }
 
