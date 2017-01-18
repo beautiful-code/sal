@@ -1,4 +1,4 @@
-package common
+package utils
 
 import (
 	"io"
@@ -53,7 +53,7 @@ func initLog(
 }
 
 // SetLogLevel sets the logging level preference
-func setLogLevel(level Level) {
+func SetLogLevel(level Level) {
 	out := os.Stdout
 	err := os.Stderr
 	// Calls function initLog by specifying log level preference.

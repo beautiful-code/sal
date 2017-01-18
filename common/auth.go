@@ -1,7 +1,10 @@
 package common
 
 import (
+	"context"
 	"crypto/rsa"
+	//"errors"
+	//"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,7 +12,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
-	"github.com/gorilla/context"
+
+	"github.com/beautiful-code/sal/common/utils"
 )
 
 // AppClaims provides custom claim for JWT
@@ -34,8 +38,13 @@ var (
 	signKey   *rsa.PrivateKey
 )
 
+type contextKey int
+
+//Define keys that support equality
+const ContextUserEmailKey contextKey = 0
+
 // Read the key files before starting http handlers
-func initKeys() {
+func InitKeys() {
 
 	signBytes, err := ioutil.ReadFile(privKeyPath)
 	if err != nil {
@@ -94,7 +103,7 @@ func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 			switch vErr.Errors {
 			case jwt.ValidationErrorExpired: //JWT expired
-				DisplayAppError(
+				utils.DisplayAppError(
 					w,
 					err,
 					"Access Token is expired, get a new Token",
@@ -103,7 +112,7 @@ func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 				return
 
 			default:
-				DisplayAppError(w,
+				utils.DisplayAppError(w,
 					err,
 					"Error while parsing the Access Token!",
 					500,
@@ -112,7 +121,7 @@ func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 			}
 
 		default:
-			DisplayAppError(w,
+			utils.DisplayAppError(w,
 				err,
 				"Error while parsing Access Token!",
 				500)
@@ -121,11 +130,11 @@ func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	}
 	if token.Valid {
-		// Set user name to HTTP context
-		context.Set(r, "current_user_email", token.Claims.(*AppClaims).CurrentUserEmail)
-		next(w, r)
+		// Using context: https://joeshaw.org/revisiting-context-and-http-handler-for-go-17/
+		contextWithUserEmail := context.WithValue(r.Context(), ContextUserEmailKey, token.Claims.(*AppClaims).CurrentUserEmail)
+		next.ServeHTTP(w, r.WithContext(contextWithUserEmail))
 	} else {
-		DisplayAppError(
+		utils.DisplayAppError(
 			w,
 			err,
 			"Invalid Access Token",

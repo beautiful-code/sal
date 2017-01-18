@@ -1,0 +1,10 @@
+{
+  "Server"      : "0.0.0.0:8090",
+  "DBHost" 			: "127.0.0.1",
+  "DBProtocol"  : "tcp",
+  "DBPort"  		: "3306",
+  "DBUser"			: "root",
+  "DBPwd"	 			: "password",
+  "DBName"      : "sal_development",
+  "LogLevel"    : 4
+}
