@@ -1,24 +1,23 @@
-package common
+package utils
 
 import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
-func NewDBConnection() *gorm.DB {
+func NewDBConnection(appConfig *AppConfig) *gorm.DB {
 	var err error
 
 	mysqlCredentials := fmt.Sprintf(
 		"%s:%s@%s(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		AppConfig.DBUser,
-		AppConfig.DBPwd,
-		AppConfig.DBProtocol,
-		AppConfig.DBHost,
-		AppConfig.DBPort,
-		AppConfig.DBName,
+		appConfig.DBUser,
+		appConfig.DBPwd,
+		appConfig.DBProtocol,
+		appConfig.DBHost,
+		appConfig.DBPort,
+		appConfig.DBName,
 	)
 
 	conn, err := gorm.Open("mysql", mysqlCredentials)

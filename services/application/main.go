@@ -1,28 +1,24 @@
 package main
 
 import (
-	//"log"
 	"net/http"
 
 	"github.com/urfave/negroni"
 
-	"github.com/beautiful-code/sal/common"
 	"github.com/beautiful-code/sal/common/utils"
 
-	"github.com/beautiful-code/sal/services/user/app"
-	"github.com/beautiful-code/sal/services/user/models"
-	"github.com/beautiful-code/sal/services/user/routers"
+	"github.com/beautiful-code/sal/services/application/app"
+	"github.com/beautiful-code/sal/services/application/models"
+	"github.com/beautiful-code/sal/services/application/routers"
 )
 
 // Entry point of the program
 func main() {
 	app.InitData()
 
-	common.InitKeys()
 	utils.SetLogLevel(utils.Level(app.Data.Config.LogLevel))
 
-	// Run DB Migrations
-	app.Data.DB.AutoMigrate(&model.User{})
+	app.Data.DB.AutoMigrate(&model.Application{})
 
 	// Get the mux router object
 	router := routers.InitRoutes()

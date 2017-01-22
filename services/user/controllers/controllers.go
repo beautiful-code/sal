@@ -3,58 +3,53 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+	//"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/gorilla/context"
-
 	"github.com/beautiful-code/sal/common"
+	"github.com/beautiful-code/sal/common/messages"
+	"github.com/beautiful-code/sal/common/utils"
+
+	"github.com/beautiful-code/sal/services/user/app"
 	"github.com/beautiful-code/sal/services/user/models"
 )
 
 // Register add a new User document
 // Handler for HTTP Post - "/register"
 func Register(w http.ResponseWriter, r *http.Request) {
-	var dataResource UserResource
+	var userMessage messages.UserMessage
 
 	// Decode the incoming User json
-	err := json.NewDecoder(r.Body).Decode(&dataResource)
+	err := json.NewDecoder(r.Body).Decode(&userMessage)
 
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"Invalid User data",
-			500,
-		)
+		utils.DisplayAppError(w, err, "Invalid User data", 500)
 		return
 	}
 
-	userModel := dataResource.Data
+	userRecord := userMessage.Data
 
-	hpass, err := bcrypt.GenerateFromPassword([]byte(userModel.Password), bcrypt.DefaultCost)
+	hpass, err := bcrypt.GenerateFromPassword([]byte(userRecord.Password), bcrypt.DefaultCost)
 
 	if err != nil {
 		panic("bcrypt err!")
 	}
 
 	user := model.User{
-		FirstName: userModel.FirstName,
-		LastName:  userModel.LastName,
-		Email:     userModel.Email,
+		FirstName: userRecord.FirstName,
+		LastName:  userRecord.LastName,
+		Email:     userRecord.Email,
 		Password:  string(hpass),
 	}
 
 	valid, err := govalidator.ValidateStruct(user)
 
 	if valid {
-		// TODO: Handle the errors
-		// Create User record
-		result := common.DB.Create(&user)
+		result := app.Data.DB.Create(&user)
 		err := "User record not saved"
 
 		if result.Error != nil {
@@ -63,91 +58,58 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if common.DB.NewRecord(&user) {
-			common.DisplayAppError(
-				w,
-				errors.New(err),
-				"Failed to write to the database.",
-				500,
-			)
+		if app.Data.DB.NewRecord(&user) {
+			utils.DisplayAppError(w, errors.New(err), "Failed to write to the database.", 500)
 			return
 		}
 	} else {
-		common.DisplayAppError(
-			w,
-			err,
-			"Unprocessable Entity",
-			422,
-		)
+		utils.DisplayAppError(w, err, "Unprocessable Entity", 422)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	j, _ := json.Marshal(map[string]string{"msg": "Created user record."})
-	w.Write(j)
+	utils.DisplayAppOK(w, "Created user record.", http.StatusCreated)
 }
 
 // Login authenticates the HTTP request with username and apssword
 // Handler for HTTP Post - "/login"
 func Login(w http.ResponseWriter, r *http.Request) {
-	var dataResource UserResource
+	var userMessage messages.UserMessage
 	var token string
 	// Decode the incoming Login json
-	err := json.NewDecoder(r.Body).Decode(&dataResource)
+	err := json.NewDecoder(r.Body).Decode(&userMessage)
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"Invalid Login data",
-			500,
-		)
+		utils.DisplayAppError(w, err, "Invalid Login data", 500)
 		return
 	}
 
-	loginUser := dataResource.Data
+	loginUser := userMessage.Data
 
 	var user model.User
-	common.DB.Where("email = ?", loginUser.Email).First(&user)
+	app.Data.DB.Where("email = ?", loginUser.Email).First(&user)
 
 	// Authenticate the login user
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
 
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"Invalid login credentials",
-			401,
-		)
+		utils.DisplayAppError(w, err, "Invalid login credentials", 401)
 		return
 	}
 	// Generate JWT token
 	token, err = common.GenerateJWT(user.Email)
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"Eror while generating the access token",
-			500,
-		)
+		utils.DisplayAppError(w, err, "Eror while generating the access token", 500)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	// Clean-up the hashpassword to eliminate it from response JSON
 	user.Password = ""
-	authUser := AuthUserModel{
-		User:  user,
+	authUserMessage := messages.AuthUserMessage{
 		Token: token,
 	}
-	j, err := json.Marshal(AuthUserResource{Data: authUser})
+
+	j, err := json.Marshal(authUserMessage)
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"An unexpected error has occurred",
-			500,
-		)
+		utils.DisplayAppError(w, err, "An unexpected error has occurred", 500)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -155,35 +117,25 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 // Returns the user object when valid JWT token is present.
-// Handler for HTTP Post - "/getUser"
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var current_user_email string
-	// Get current user email from context
-	if val, ok := context.GetOk(r, "current_user_email"); ok {
-		current_user_email = val.(string)
-	}
+	// Get current user email from the request's context
+	user_email := r.Context().Value(common.ContextUserEmailKey).(string)
 
 	var user model.User
-	common.DB.Where("email = ?", current_user_email).First(&user)
-
-	fmt.Println(current_user_email)
+	app.Data.DB.Where("email = ?", user_email).First(&user)
 
 	w.Header().Set("Content-Type", "application/json")
 	// Clean-up the hashpassword to eliminate it from response JSON
 	user.Password = ""
-	jsonUser := UserModel{
+	userRecord := messages.UserRecord{
+		ID:        user.ID,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Email:     user.Email,
 	}
-	j, err := json.Marshal(UserResource{Data: jsonUser})
+	j, err := json.Marshal(messages.UserMessage{Data: userRecord})
 	if err != nil {
-		common.DisplayAppError(
-			w,
-			err,
-			"An unexpected error has occurred",
-			500,
-		)
+		utils.DisplayAppError(w, err, "An unexpected error has occurred", 500)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
