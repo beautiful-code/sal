@@ -1,0 +1,44 @@
+Build an image (Always specify an explicit version)
+docker build -t ravibhim/sal-user:v1 .
+
+Run a docker image in foreground
+docker run ravibhim/sal-user:v1
+
+Expose a port (not working)
+docker run -p $HOSTPORT:$CONTAINERPORT -t ravibhim/sal-user:v1
+Ex: docker run -p 9080:8080 -t ravibhim/sal-user:v1
+
+Attach to a running container
+docker exec -it $CONTAINER /bin/bash
+
+Stop a running container
+docker stop $CONTAINER
+
+
+Run a container on an image and log into it
+docker run -it ravibhim/sal-user:v1 /bin/bash
+
+
+Minikube
+
+Intro article: https://medium.com/@claudiopro/getting-started-with-kubernetes-via-minikube-ada8c7a29620#.z2f9vlg7i
+https://kubernetes.io/docs/getting-started-guides/minikube/#reusing-the-docker-daemon
+
+# Create a deployment
+kubectl run sal-user --image=ravibhim/sal-user:v1 --port=8080
+
+# Expose the deployment as a service
+kubectl expose deployment sal-user --type=NodePort
+
+# Get the service url
+minikube service sal-user --url
+
+
+Kubernetes
+
+# Learn about deployments
+https://kubernetes.io/docs/user-guide/deployments/
+
+# Delete a deployment
+kubectl delete deployment sal-user
+

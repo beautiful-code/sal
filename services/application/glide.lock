@@ -1,22 +1,20 @@
-hash: 02dc75c05950002e77ae304068630bfc86271d26a63645c4f83c5c450244c8f8
-updated: 2017-01-22T16:57:56.295088672-08:00
+hash: 1821f6690aca2e932372002c08425cbe24b82343ea4bc4823af366b9e64d1316
+updated: 2017-01-24T17:49:47.661556022-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
 - name: github.com/beautiful-code/sal
   version: 6375053a3cc58ddd5765f05a91e56a9eba06c78f
   subpackages:
+  - utils
+  - messages
   - common
   - common/utils
+  - services/application/app
+  - services/application/models
+  - services/application/routers
   - common/messages
-  - services/user/app
-  - services/user/models
-  - services/user/routers
-  - services/user/controllers
-- name: github.com/dgrijalva/jwt-go
-  version: a601269ab70c205d26370c16f7c81e9017c14e04
-  subpackages:
-  - request
+  - services/application/controllers
 - name: github.com/go-sql-driver/mysql
   version: 2e00b5cd70399450106cec6431c2e2ce3cae5034
 - name: github.com/gorilla/context
@@ -29,9 +27,4 @@ imports:
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/urfave/negroni
   version: b0a6f4500e67c3e53f2d1563cca1563ab9777533
-- name: golang.org/x/crypto
-  version: b8a2a83acfe6e6770b75de42d5ff4c67596675c0
-  subpackages:
-  - bcrypt
-  - blowfish
 devImports: []

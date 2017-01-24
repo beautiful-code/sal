@@ -6,5 +6,6 @@
   "DBUser"			: "root",
   "DBPwd"	 			: "",
   "DBName"      : "sal_development",
-  "LogLevel"    : 1
+  "LogLevel"    : 1,
+  "UserService" : "0.0.0.0:8080"
 }

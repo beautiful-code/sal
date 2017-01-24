@@ -10,6 +10,7 @@ type (
 	AppConfig struct {
 		Server, DBHost, DBUser, DBPwd, DBName, DBProtocol, DBPort string
 		LogLevel                                                  int
+		UserService                                               string
 	}
 )
 

@@ -1,4 +1,5 @@
 config.json
+config.json.staging
 logs.txt
 keys
 vendor
