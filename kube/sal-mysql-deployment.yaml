@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql-server
+  labels:
+    app: mysql-server
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-server
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql/mysql-server:latest
+        name: mysql-server
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: secret
+        ports:
+        - containerPort: 3306
+          name: mysql
