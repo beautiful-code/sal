@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sal-user
+  labels:
+    app: sal-user
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sal-user
+    spec:
+      containers:
+      - name: sal-user
+        image: sal/user:v1
+        ports:
+        - containerPort: 8080

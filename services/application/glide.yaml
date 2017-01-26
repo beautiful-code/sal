@@ -1,15 +1,11 @@
-package: github.com/beautiful-code/sal/services/user
+package: github.com/beautiful-code/sal/services/application
 import:
 - package: github.com/asaskevich/govalidator
-- package: github.com/beautiful-code/sal
+- package: github.com/beautiful-code/sal/common
   subpackages:
-  - common
-  - common/utils
-  - common/messages
+  - utils
+  - messages
 - package: github.com/go-sql-driver/mysql
 - package: github.com/gorilla/mux
 - package: github.com/jinzhu/gorm
 - package: github.com/urfave/negroni
-- package: golang.org/x/crypto
-  subpackages:
-  - bcrypt

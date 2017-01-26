@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -17,6 +17,7 @@ import (
 )
 
 func Create(w http.ResponseWriter, r *http.Request) {
+	utils.Info.Printf("Request to create an application.\n")
 	// Get the current user object
 	userMessage := getUserMessage(r)
 
@@ -56,7 +57,10 @@ func Create(w http.ResponseWriter, r *http.Request) {
 func getUserMessage(r *http.Request) messages.UserMessage {
 	var userMessage messages.UserMessage
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://localhost:8080/user", nil)
+	userEndpoint := fmt.Sprintf("http://%s/user", app.Data.Config.UserService)
+	utils.Info.Printf("userEndpoint=%s\n", userEndpoint)
+
+	req, _ := http.NewRequest("GET", userEndpoint, nil)
 	req.Header.Set("Authorization", r.Header.Get("Authorization"))
 
 	res, _ := client.Do(req)
