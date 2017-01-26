@@ -1,18 +1,18 @@
 hash: 02dc75c05950002e77ae304068630bfc86271d26a63645c4f83c5c450244c8f8
-updated: 2017-01-22T16:57:56.295088672-08:00
+updated: 2017-01-26T11:16:47.264917003+05:30
 imports:
 - name: github.com/asaskevich/govalidator
   version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
 - name: github.com/beautiful-code/sal
-  version: 6375053a3cc58ddd5765f05a91e56a9eba06c78f
+  version: 7c5e5f5745d7b2b3af700b95880abf501f8da8c9
   subpackages:
   - common
-  - common/utils
   - common/messages
+  - common/utils
   - services/user/app
+  - services/user/controllers
   - services/user/models
   - services/user/routers
-  - services/user/controllers
 - name: github.com/dgrijalva/jwt-go
   version: a601269ab70c205d26370c16f7c81e9017c14e04
   subpackages:
@@ -24,14 +24,14 @@ imports:
 - name: github.com/gorilla/mux
   version: 392c28fe23e1c45ddba891b0320b3b5df220beea
 - name: github.com/jinzhu/gorm
-  version: 7fb9b62c17d90320e0582a4720db025c1652fd6a
+  version: 89f6d74b5ebab61a964b7a69c865a16cf9f24821
 - name: github.com/jinzhu/inflection
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/urfave/negroni
   version: b0a6f4500e67c3e53f2d1563cca1563ab9777533
 - name: golang.org/x/crypto
-  version: b8a2a83acfe6e6770b75de42d5ff4c67596675c0
+  version: 41d678d1df78cd0410143162dff954e6dc09300f
   subpackages:
   - bcrypt
   - blowfish
-devImports: []
+testImports: []

@@ -1,20 +1,20 @@
 hash: 1821f6690aca2e932372002c08425cbe24b82343ea4bc4823af366b9e64d1316
-updated: 2017-01-24T17:49:47.661556022-08:00
+updated: 2017-01-26T11:17:03.993233652+05:30
 imports:
 - name: github.com/asaskevich/govalidator
   version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
 - name: github.com/beautiful-code/sal
-  version: 6375053a3cc58ddd5765f05a91e56a9eba06c78f
+  version: 7c5e5f5745d7b2b3af700b95880abf501f8da8c9
   subpackages:
-  - utils
-  - messages
   - common
+  - common/messages
   - common/utils
+  - messages
   - services/application/app
+  - services/application/controllers
   - services/application/models
   - services/application/routers
-  - common/messages
-  - services/application/controllers
+  - utils
 - name: github.com/go-sql-driver/mysql
   version: 2e00b5cd70399450106cec6431c2e2ce3cae5034
 - name: github.com/gorilla/context
@@ -22,9 +22,9 @@ imports:
 - name: github.com/gorilla/mux
   version: 392c28fe23e1c45ddba891b0320b3b5df220beea
 - name: github.com/jinzhu/gorm
-  version: 7fb9b62c17d90320e0582a4720db025c1652fd6a
+  version: 89f6d74b5ebab61a964b7a69c865a16cf9f24821
 - name: github.com/jinzhu/inflection
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/urfave/negroni
   version: b0a6f4500e67c3e53f2d1563cca1563ab9777533
-devImports: []
+testImports: []
