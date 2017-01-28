@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
@@ -19,7 +19,11 @@ import (
 func Create(w http.ResponseWriter, r *http.Request) {
 	utils.Info.Printf("Request to create an application.\n")
 	// Get the current user object
-	userMessage := getUserMessage(r)
+	userMessage, gum_err := GetUserMessage(r)
+	if gum_err != nil {
+		utils.DisplayAppError(w, gum_err, "Unable to get the UserMessage object.", 500)
+		return
+	}
 
 	// Decode the incoming Application json
 	var applicationMessage messages.ApplicationMessage
@@ -29,7 +33,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	application := model.Application{
+	application := models.Application{
 		Name:   applicationMessage.Data.Name,
 		UserId: userMessage.Data.ID,
 	}
@@ -51,23 +55,33 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.DisplayAppOK(w, "Created application record.", http.StatusCreated)
-
 }
 
-func getUserMessage(r *http.Request) messages.UserMessage {
-	var userMessage messages.UserMessage
-	client := &http.Client{}
-	userEndpoint := fmt.Sprintf("http://%s/user", app.Data.Config.UserService)
-	utils.Info.Printf("userEndpoint=%s\n", userEndpoint)
+func List(w http.ResponseWriter, r *http.Request) {
+	// Get the current user object
+	userMessage, gum_err := GetUserMessage(r)
+	if gum_err != nil {
+		utils.DisplayAppError(w, gum_err, "Unable to get the UserMessage object.", 500)
+		return
+	}
 
-	req, _ := http.NewRequest("GET", userEndpoint, nil)
-	req.Header.Set("Authorization", r.Header.Get("Authorization"))
+	var applications []models.Application
+	app.Data.DB.Where("user_id = ?", fmt.Sprintf("%v", userMessage.Data.ID)).Find(&applications)
 
-	res, _ := client.Do(req)
+	var records []messages.ApplicationRecord = make([]messages.ApplicationRecord, len(applications))
+	for i, e := range applications {
+		var record messages.ApplicationRecord
+		record.ID = e.ID
+		record.Name = e.Name
+		records[i] = record
+	}
 
-	//block forever at the next line
-	content, _ := ioutil.ReadAll(res.Body)
+	j, err := json.Marshal(messages.ApplicationListResponseMessage{Data: records})
+	if err != nil {
+		utils.DisplayAppError(w, err, "An unexpected error has occurred", 500)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(j)
 
-	json.Unmarshal(content, &userMessage)
-	return userMessage
 }

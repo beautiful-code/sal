@@ -18,7 +18,8 @@ func main() {
 
 	utils.SetLogLevel(utils.Level(app.Data.Config.LogLevel))
 
-	app.Data.DB.AutoMigrate(&model.Application{})
+	app.Data.DB.AutoMigrate(&models.Application{})
+	app.Data.DB.AutoMigrate(&models.Feedback{})
 
 	// Get the mux router object
 	router := routers.InitRoutes()

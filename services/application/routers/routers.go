@@ -9,8 +9,10 @@ import (
 
 func SetApplicationRoutes(router *mux.Router) *mux.Router {
 
-	//router.HandleFunc("/applications", controllers.List).Methods("POST")
+	router.HandleFunc("/applications", controllers.List).Methods("POST")
 	router.HandleFunc("/applications/create", controllers.Create).Methods("POST")
+	router.HandleFunc("/feedbacks/create", controllers.CreateFeedback).Methods("POST")
+	router.HandleFunc("/feedbacks", controllers.ListFeedbacks).Methods("POST")
 
 	return router
 }

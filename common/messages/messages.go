@@ -25,4 +25,27 @@ type (
 		ID   uint   `json:"id"`
 		Name string `json:"name"`
 	}
+
+	ApplicationListResponseMessage struct {
+		Data []ApplicationRecord `json:"data"`
+	}
+
+	FeedbackMessage struct {
+		Data FeedbackRecord `json:"data"`
+	}
+
+	FeedbackListRequestMessage struct {
+		Data ApplicationRecord `json:"data"`
+	}
+
+	FeedbackListResponseMessage struct {
+		Data []FeedbackRecord `json:"data"`
+	}
+
+	FeedbackRecord struct {
+		ID            uint   `json:"id"`
+		Desc          string `json:"desc"`
+		ApplicationId uint   `json:"appid"`
+		Email         string `json:"email"`
+	}
 )
