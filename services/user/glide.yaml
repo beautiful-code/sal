@@ -13,3 +13,5 @@ import:
 - package: golang.org/x/crypto
   subpackages:
   - bcrypt
+- package: github.com/rs/cors
+  version: v1.0

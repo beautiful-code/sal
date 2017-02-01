@@ -11,6 +11,7 @@ type (
 		Server, DBHost, DBUser, DBPwd, DBName, DBProtocol, DBPort string
 		LogLevel                                                  int
 		UserService                                               string
+		AllowedOrigins                                            []string
 	}
 )
 

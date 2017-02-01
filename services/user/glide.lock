@@ -1,10 +1,10 @@
-hash: 02dc75c05950002e77ae304068630bfc86271d26a63645c4f83c5c450244c8f8
-updated: 2017-01-26T11:16:47.264917003+05:30
+hash: 73ac4c23c90bbe7b39dcac3e49b1285165593245eec407654963e2e949abccb3
+updated: 2017-02-01T19:42:50.781048503+05:30
 imports:
 - name: github.com/asaskevich/govalidator
   version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
 - name: github.com/beautiful-code/sal
-  version: 7c5e5f5745d7b2b3af700b95880abf501f8da8c9
+  version: 6e16df8812f679ffd50c03bd09e6d15dcc328cf7
   subpackages:
   - common
   - common/messages
@@ -24,14 +24,22 @@ imports:
 - name: github.com/gorilla/mux
   version: 392c28fe23e1c45ddba891b0320b3b5df220beea
 - name: github.com/jinzhu/gorm
-  version: 89f6d74b5ebab61a964b7a69c865a16cf9f24821
+  version: e4b130d2d7fc45a8b93180950d73ddc368f0dda4
 - name: github.com/jinzhu/inflection
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/rs/cors
+  version: a62a804a8a009876ca59105f7899938a1349f4b3
+- name: github.com/rs/xhandler
+  version: ed27b6fd65218132ee50cd95f38474a3d8a2cd12
 - name: github.com/urfave/negroni
-  version: b0a6f4500e67c3e53f2d1563cca1563ab9777533
+  version: 61dbefc515b4dede6eb2de7df1e54d49edce892d
 - name: golang.org/x/crypto
-  version: 41d678d1df78cd0410143162dff954e6dc09300f
+  version: dc137beb6cce2043eb6b5f223ab8bf51c32459f4
   subpackages:
   - bcrypt
   - blowfish
+- name: golang.org/x/net
+  version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
+  subpackages:
+  - context
 testImports: []

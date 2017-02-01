@@ -14,13 +14,13 @@
 2. Log on to the running `sal-mysql-*` container.
    - Run `kubectl exec -it sal-mysql-* bash` and run the below commands within the container.
    - $ mysql -uroot -p # Password: secret
-   - $ mysql > CREATE USER 'sal-user'@'localhost' IDENTIFIED BY 'sal-secret';
-   - $ mysql > GRANT ALL PRIVILEGES ON *.* TO 'sal-user'@'localhost' WITH GRANT OPTION;
-   - $ mysql > CREATE USER 'sal-user'@'%' IDENTIFIED BY 'sal-secret';
-   - $ mysql > GRANT ALL PRIVILEGES ON *.* TO 'sal-user'@'%' WITH GRANT OPTION;
+   - $ mysql > `CREATE USER 'sal-user'@'localhost' IDENTIFIED BY 'sal-secret';`
+   - $ mysql > `GRANT ALL PRIVILEGES ON *.* TO 'sal-user'@'localhost' WITH GRANT OPTION;`
+   - $ mysql > `CREATE USER 'sal-user'@'%' IDENTIFIED BY 'sal-secret';`
+   - $ mysql > `GRANT ALL PRIVILEGES ON *.* TO 'sal-user'@'%' WITH GRANT OPTION;`
    - $ mysql > exit
    - $ mysql -u sal-user -p
-   - $ mysql > create database sal_staging;
+   - $ mysql > `create database sal_staging;`
 
 3. Update `services/user/config.json.staging` with the above used credentials and
 build the docker image. Update the k8s deployment yaml file if necessary.
