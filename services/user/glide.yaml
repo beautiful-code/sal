@@ -1,7 +1,9 @@
 package: github.com/beautiful-code/sal/services/user
+version: user-v0.0.2
 import:
 - package: github.com/asaskevich/govalidator
 - package: github.com/beautiful-code/sal
+  version: user-v0.0.2
   subpackages:
   - common
   - common/utils
@@ -13,3 +15,5 @@ import:
 - package: golang.org/x/crypto
   subpackages:
   - bcrypt
+- package: github.com/rs/cors
+  version: v1.0

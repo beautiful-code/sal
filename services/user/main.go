@@ -4,6 +4,7 @@ import (
 	//"log"
 	"net/http"
 
+	"github.com/rs/cors"
 	"github.com/urfave/negroni"
 
 	"github.com/beautiful-code/sal/common"
@@ -27,8 +28,14 @@ func main() {
 	// Get the mux router object
 	router := routers.InitRoutes()
 
+	// Handle CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins: app.Data.Config.AllowedOrigins,
+	})
+
 	// Create a negroni instance
 	n := negroni.Classic()
+	n.Use(c)
 	n.UseHandler(router)
 
 	// Create the Server
