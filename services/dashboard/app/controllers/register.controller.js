@@ -1,8 +1,8 @@
 'use strict';
 
-// registerController.inject = ['userService'];
+// registerController.$inject = ['userService'];
 
-function registerController() {
+function RegisterController() {
   var _this = this;
 
   /*
@@ -12,4 +12,4 @@ function registerController() {
   */
 }
 
-module.exports = registerController;
+module.exports = RegisterController;

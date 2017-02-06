@@ -1,14 +1,13 @@
 'use strict';
 
-// homeController.inject = [''];
+// HomeController.$inject = [''];
 
-function homeController() {
+function HomeController() {
   var _this = this;
 
   _this.userSignedIn = function() {
-    // TODO
     return false;
   }
 }
 
-module.exports = homeController;
+module.exports = HomeController;

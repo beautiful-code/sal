@@ -1,8 +1,8 @@
 'use strict';
 
-// loginController.inject = ['userService'];
+// loginController.$inject = ['userService'];
 
-function loginController() {
+function LoginController() {
   var _this = this;
 
   /*
@@ -12,4 +12,4 @@ function loginController() {
   */
 }
 
-module.exports = loginController;
+module.exports = LoginController;

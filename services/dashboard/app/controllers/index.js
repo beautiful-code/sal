@@ -1,9 +1,8 @@
 'use strict';
 
-var angular = require('angular');
-
+// retrive the angular module and load the controllers
 angular.module('dashboard')
-  .controller('homeController', require('./home.controller'))
-  .controller('loginController', require('./login.controller'))
-  .controller('registerController', require('./register.controller'))
-  .controller('dashboardController', require('./dashboard.controller'));
+  .controller('HomeController', require('./home.controller'))
+  .controller('LoginController', require('./login.controller'))
+  .controller('RegisterController', require('./register.controller'))
+  .controller('DashboardController', require('./dashboard.controller'));

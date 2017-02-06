@@ -1,12 +1,16 @@
-// Retrieve the angular module
-angular.module('dashboard', []);
+// Note: Angular is loaded by default for the entire app
+// webpack.config.js so no need to use require('angular')
+var ngRoute = require('angular-route');
+var angularCSS = require('angular-css');
 
-require('./routes');
+// Init the angular module
+angular.module('dashboard', ['ngRoute', 'angularCSS']);
 
 // Import the index.js in these directories
-require('./directives');
-require('./services');
 require('./controllers');
-
+require('./directives');
+require('./factories');
+require('./routes');
+require('./services');
 // Load the main.scss
 require('./stylesheets/main.scss');
