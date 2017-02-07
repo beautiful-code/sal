@@ -6,5 +6,8 @@
   "DBUser"			: "root",
   "DBPwd"	 			: "password",
   "DBName"      : "sal_development",
-  "LogLevel"    : 4
+  "LogLevel"    : 4,
+  "AllowedOrigins" : [
+    "http://localhost:8000"
+  ]
 }
