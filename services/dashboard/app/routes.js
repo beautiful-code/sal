@@ -13,7 +13,11 @@ dashboardApp.run(['$rootScope', '$route', 'AuthService', '$location', function($
 
   $rootScope.logOut = function() {
     AuthService.logout();
-    $location.path('/')
+    $rootScope.flashMsg = {
+      type: 'success',
+      msg: 'Logged out user Successfully!'
+    };
+    $location.path('/');
   };
 
   $rootScope.currentUser = function() {
@@ -21,18 +25,21 @@ dashboardApp.run(['$rootScope', '$route', 'AuthService', '$location', function($
   };
 }]);
 
-dashboardApp.run(function ($rootScope, $location, AuthService) {
+dashboardApp.run(['$rootScope', '$location', 'AuthService', '$timeout', function ($rootScope, $location, AuthService, $timeout) {
   $rootScope.$on('$routeChangeStart', function (event, next, curr) {
     if (next.$$route) {
-      $rootScope.flashMsg = {};
       var securePath = next.$$route.loginRequired;
 
       if (!AuthService.isAuthed() && securePath) { $location.path('/'); }
     }
-  });
-});
 
-dashboardApp.config(function($routeProvider) {
+    $timeout(function() {
+      $rootScope.flashMsg = {};
+    }, 15000);
+  });
+}]);
+
+dashboardApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'app/templates/home.html',
@@ -59,4 +66,4 @@ dashboardApp.config(function($routeProvider) {
       pageTitle: 'Dashboard',
       loginRequired: true
     }).otherwise({redirectTo: '/'});
-});
+}]);
