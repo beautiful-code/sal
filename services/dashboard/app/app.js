@@ -2,9 +2,14 @@
 // webpack.config.js so no need to use require('angular')
 var ngRoute = require('angular-route');
 var angularCSS = require('angular-css');
+var angularJwt = require('angular-jwt');
 
 // Init the angular module
-angular.module('dashboard', ['ngRoute', 'angularCSS']);
+angular.module('dashboard', [
+  'ngRoute',
+  'angularCSS',
+  'angular-jwt'
+]);
 
 // Import the index.js in these directories
 require('./controllers');

@@ -1,10 +1,12 @@
 @import "~bootstrap/scss/bootstrap";
 
-/* scss test
-body {
-  h1 {
-    font-family: 'OpenSans';
-    color: #a5a5a5;
+.navbar {
+  .logout-link {
+    color: white;
+    text-decoration: underline;
   }
 }
-*/
+
+.cursor_Pointer {
+  cursor: pointer;
+}

@@ -2,15 +2,38 @@
 var dashboardApp = angular.module('dashboard');
 
 // Dynamic page title
-dashboardApp.run(['$rootScope', '$route', function($rootScope, $route) {
+dashboardApp.run(['$rootScope', '$route', 'AuthService', '$location', function($rootScope, $route, AuthService, $location) {
   $rootScope.$on('$routeChangeSuccess', function() {
     document.title = $route.current.pageTitle + ' | SAL';
   });
+
+  $rootScope.userSignedIn = function() {
+    return AuthService.isAuthed();
+  };
+
+  $rootScope.logOut = function() {
+    AuthService.logout();
+    $location.path('/')
+  };
+
+  $rootScope.currentUser = function() {
+    return AuthService.currentUser();
+  };
 }]);
+
+dashboardApp.run(function ($rootScope, $location, AuthService) {
+  $rootScope.$on('$routeChangeStart', function (event, next, curr) {
+    if (next.$$route) {
+      $rootScope.flashMsg = {};
+      var securePath = next.$$route.loginRequired;
+
+      if (!AuthService.isAuthed() && securePath) { $location.path('/'); }
+    }
+  });
+});
 
 dashboardApp.config(function($routeProvider) {
   $routeProvider
-  // route for homepage
     .when('/', {
       templateUrl: 'app/templates/home.html',
       controller: 'HomeController',
@@ -33,6 +56,7 @@ dashboardApp.config(function($routeProvider) {
       templateUrl: 'app/templates/dashboard.html',
       controller: 'DashboardController',
       css: 'app/stylesheets/dashboard.css',
-      pageTitle: 'Dashboard'
-    });
+      pageTitle: 'Dashboard',
+      loginRequired: true
+    }).otherwise({redirectTo: '/'});
 });

@@ -5,8 +5,8 @@ const extractCommons = new webpack.optimize.CommonsChunkPlugin({
   filename: 'commons.js'
 });
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const extractCSS = new ExtractTextPlugin('[name].bundle.css')
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractCSS = new ExtractTextPlugin('[name].bundle.css');
 
 const config = {
   context: __dirname + '/app',
@@ -19,6 +19,10 @@ const config = {
     path: __dirname + '/dist',
     publicPath: '/dist/',
     filename: '[name].bundle.js'
+  },
+  devServer: {
+    inline: true,
+    port: 8000
   },
   module: {
     rules: [{
@@ -41,6 +45,10 @@ const config = {
           ]
         }
       }]
+    },
+    {
+      test: /\.html$/,
+      loader: 'raw-loader'
     }]
   },
   plugins: [
@@ -48,6 +56,6 @@ const config = {
     extractCSS,
     extractCommons
   ]
-}
+};
 
-module.exports = config
+module.exports = config;
