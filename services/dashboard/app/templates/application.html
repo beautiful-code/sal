@@ -30,25 +30,30 @@
       </ul>
     </nav>
 
-    <main class="main-content col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-    <h2>Applications List</h2>
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="app in dashboard.applications">
-            <td><a ng-href="/#!/dashboard/applications/{{app.id}}">{{app.id}}</a></td>
-            <td>{{app.name}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <a class="btn btn-primary" ng-href="/#!/dashboard/applications/new">New Application</button>
+    <main ng-controller="ApplicationController as app" class="main-content col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+      <pre ng-init="dash.getApplications()">{{dash.applications}}</pre>
+
+      <h2>Feedback List</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Desc</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="feedback in app.feedbacks">
+              <td>{{feedback.id}}</td>
+              <td>{{feedback.desc}}</td>
+              <td>{{feedback.email}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a class="btn btn-primary" ng-href="/#!/dashboard/applications/{{app.applicationId}}/feedbacks/new">New Feedback</button>
     </main>
   </div>
 </div>

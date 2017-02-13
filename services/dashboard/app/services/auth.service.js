@@ -24,7 +24,7 @@ function AuthService($window, jwtHelper) {
     var token = _this.getToken();
 
     if(token) {
-      return jwtHelper.isTokenExpired(token);
+      return !jwtHelper.isTokenExpired(token);
     } else {
       return false;
     }

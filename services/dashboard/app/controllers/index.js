@@ -5,4 +5,5 @@ angular.module('dashboard')
   .controller('HomeController', require('./home.controller'))
   .controller('LoginController', require('./login.controller'))
   .controller('RegisterController', require('./register.controller'))
-  .controller('DashboardController', require('./dashboard.controller'));
+  .controller('DashboardController', require('./dashboard.controller'))
+  .controller('ApplicationController', require('./application.controller'));

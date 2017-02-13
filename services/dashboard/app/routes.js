@@ -65,5 +65,26 @@ dashboardApp.config(['$routeProvider', function($routeProvider) {
       css: 'app/stylesheets/dashboard.css',
       pageTitle: 'Dashboard',
       loginRequired: true
+    })
+    .when('/dashboard/applications/new', {
+      templateUrl: 'app/templates/new_application.html',
+      controller: 'DashboardController',
+      css: 'app/stylesheets/dashboard.css',
+      pageTitle: 'New Application | Dashboard',
+      loginRequired: true
+    })
+    .when('/dashboard/applications/:appId', {
+      templateUrl: 'app/templates/application.html',
+      controller: 'ApplicationController',
+      css: 'app/stylesheets/dashboard.css',
+      pageTitle: 'Feedbacks | Application | Dashboard',
+      loginRequired: true
+    })
+    .when('/dashboard/applications/:appId/feedbacks/new', {
+      templateUrl: 'app/templates/new_feedback.html',
+      controller: 'ApplicationController',
+      css: 'app/stylesheets/dashboard.css',
+      pageTitle: 'New Feedback | Application | Dashboard',
+      loginRequired: true
     }).otherwise({redirectTo: '/'});
 }]);

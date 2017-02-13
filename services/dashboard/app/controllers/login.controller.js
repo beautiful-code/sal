@@ -36,7 +36,13 @@ function LoginController(UserService, $location, $rootScope) {
 
     // TODO: Change the response structure on the backend API
     if (response.data && response.data.data && response.data.data.error) {
-      _this.formErrors = response.data.data.error.split(";");
+      var err = response.data.data.error;
+
+      if (err == "crypto/bcrypt: hashedSecret too short to be a bcrypted password") {
+        _this.formErrors.push('User does not exist. Please create a new account.');
+      } else {
+        _this.formErrors = err.split(";");
+      }
     }
   };
 
