@@ -1,0 +1,16 @@
+<!doctype html>
+<html ng-app="dashboard">
+  <head>
+    <title ng-bind="$state.current.pageTitle + ' | SAL'">SAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="dist/commons.js"></script>
+    <script src="dist/app.bundle.js"></script>
+  </head>
+  <body>
+    <div ng-show="flashMsg" class="flashMsg alert alert-{{flashMsg.type}}" role="alert">
+      {{flashMsg.msg}}
+    </div>
+    <section ng-view>
+    </section>
+  </body>
+</html>

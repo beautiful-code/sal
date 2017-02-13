@@ -4,6 +4,9 @@
 - Run `kubectl config use-context minikube` to switch context to minikube cluster that is setup on your host machine.
 
 ### Creating k8s deployments
+0. Create Persistent Storage volume for mysql server
+  - Run `kubectl create -f mysql-pv-volume.yml`
+  - Run `kubectl create -f mysql-pv-claim.yml`
 
 1. Create the mysql-server deployments on the cluster.
   - Run `kubectl create -f sal-mysql-deployment.yaml`

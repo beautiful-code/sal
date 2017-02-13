@@ -1,0 +1,25 @@
+<form class="form-signin" ng-controller="LoginController as user">
+  <div ng-if="user.formErrors" class="alert alert-danger" role="alert">
+    <p><strong>Oh snap!</strong></p>
+    <ul>
+      <li ng-repeat="err in user.formErrors">
+        {{err}}
+      </li>
+    </ul>
+  </div>
+
+  <h2 class="form-signin-heading">Please log in</h2>
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="email" id="email" class="form-control" ng-model="user.email" placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control" ng-model="user.password" placeholder="Password" required>
+  <!--<div class="checkbox">
+    <label>
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+  </div>-->
+  <button class="btn btn-lg btn-primary btn-block" type="button" ng-click="user.login()">Sign in</button>
+  <p><!-- invisible break --> </p>
+  <p>New user? <a href="/#!/register">Register here.</a></p>
+</form>
+

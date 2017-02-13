@@ -1,0 +1,19 @@
+@import "~bootstrap/scss/bootstrap";
+
+.navbar {
+  .logout-link {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+.cursor_Pointer {
+  cursor: pointer;
+}
+
+.flashMsg {
+  position: fixed;
+  bottom: 1%;
+  left: 1%;
+  z-index: 99999;
+}

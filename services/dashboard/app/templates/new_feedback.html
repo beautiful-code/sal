@@ -1,0 +1,67 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+  <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">Dashboard</a>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Help</a>
+      </li>
+    </ul>
+    <form class="form-inline mt-2 mt-md-0">
+      <span ng-if="userSignedIn()" class="logout-link cursor_Pointer" ng-click="logOut()">Log out ({{currentUser().current_user_email}})</span>
+    </form>
+  </div>
+</nav>
+
+<div class="container-fluid" ng-controller="DashboardController as dashboard">
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Overview</a>
+          <a class="nav-link active" href="/#!/dashboard">Applications <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </nav>
+
+    <main ng-controller="ApplicationController as app" class="main-content col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+      <h2>New Feedback</h2>
+
+      <form>
+        <div ng-if="app.formErrors" class="alert alert-danger" role="alert">
+          <p><strong>Oh snap!</strong></p>
+          <ul>
+            <li ng-repeat="err in app.formErrors">
+              {{err}}
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="desc">Description</label>
+            <input required type="text" class="form-control" id="desc" ng-model="app.feedbackDesc" placeholder="Enter Description Here">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" ng-model="app.feedbackEmail" placeholder="Enter Email Here">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <button type="button" class="btn btn-primary" ng-click="app.createFeedback()">Create</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
