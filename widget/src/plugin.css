@@ -1,0 +1,99 @@
+.sal-feedback__container {
+  display: none;
+  position: fixed;
+  bottom: -2px;
+  right: 2px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.sal-feedback__overlay {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: #fff;
+  z-index: 111;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.sal-feedback__container .sal-feedback__container--close {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  color: #ddd;
+  z-index: 222;
+}
+
+.sal-feedback__container .sal-feedback__container--close:hover {
+  color: red;
+}
+
+.sal-feedback__toggle--btn {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+}
+
+.sal-feedback__container .sal-feedback__header {
+  margin: 5px 0;
+}
+
+.sal-feedback__container .sal-feedback__textArea textarea {
+  width: 97%;
+  height: 90px;
+  margin: 0;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.sal-feedback__container .sal-feedback__textArea textarea.invalid {
+  border: 1px solid #f17575;
+}
+
+.sal-feedback__container .sal-feedback__textField input {
+  width: 97%;
+  margin: 5px 0;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+}
+
+.sal-feedback__container .sal-feedback__textField input.invalid {
+  border: 1px solid #f17575;
+}
+
+.sal-feedback__container .sal-feedback__btn button {
+  padding: 6px;
+  margin: 5px 5px 10px 0;
+  font-size: 13px;
+  border: none;
+  outline: none;
+}
+
+.sal-feedback__container .sal-feedback__btn button:hover {
+  cursor: pointer;
+}
+
+.sal-feedback__container .sal-feedback__btn .submit {
+  background-color: #49ac77;
+  color: #fff;
+}
+
+.sal-feedback__container .sal-feedback__btn .submit:hover {
+  background-color: #49be77;
+  color: #f1f1f1;
+}
+
+.sal-feedback__container .sal-feedback__btn .clear:hover {
+  background-color: #dedede;
+}

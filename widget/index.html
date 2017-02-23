@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Plugin Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <script type="text/javascript">
+      (function (window, document) {
+        var loadPlugin = function() {
+          var ele = document.createElement('script');
+          var tag = document.getElementsByTagName('head')[0];
+          ele.type = 'text/javascript';
+          ele.src = 'http://localhost:9000/src/plugin.js';
+          tag.parentNode.insertBefore(ele, tag);
+        };
+
+        var loadPluginStyles = function() {
+          var ele = document.createElement('link');
+          var tag = document.getElementsByTagName('head')[0];
+          ele.type = 'text/css';
+          ele.rel = 'stylesheet';
+          ele.href = 'http://localhost:9000/src/plugin.css';
+          tag.parentNode.insertBefore(ele, tag);
+        };
+
+        var loadResources = function() {
+          loadPluginStyles();
+          loadPlugin();
+        };
+
+        window.addEventListener ? window.addEventListener("load", loadResources, false) : window.attachEvent("onload", loadResources);
+      })(window, document);
+    </script>
+  </body>
+</html>
